@@ -77,20 +77,26 @@
         var price = $(this).attr('data-price');
         var qty = $(this).parents().children("select");
 
-        $.ajax({
-            url : "{{ url('add-to-cart') }}",
-            type : "post",
-            data : {
-                "id" : productid,
-                "qty" : qty.val(),
-                "dscode" : '',
-                "price" : price,
-            },
-            success:function(data) {
-                console.log(data);
-                alert(data.status);
-            }
-        });
+        var dscode = prompt("Please Discount Code (empty this field if you dont want to use discount", "DC10");
+        if (dscode === null) {
+            return false; //break out of the function early
+        }
+        // if (person != null) {
+          $.ajax({
+              url : "{{ url('add-to-cart') }}",
+              type : "post",
+              data : {
+                  "id" : productid,
+                  "qty" : qty.val(),
+                  "dscode" : dscode,
+                  "price" : price,
+              },
+              success:function(data) {
+                  console.log(data);
+                  alert(data.status);
+              }
+          });
+        // }
       });
 
   </script>

@@ -11,8 +11,9 @@
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
                     <th scope="col">Image</th>
+                    <th scope="col">Discount</th>
                     <th scope="col">Qty</th>
-                    <th scope="col">Price</th>
+                    <th scope="col">Price (after discount)</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -24,6 +25,7 @@
                     <th scope="row">{{ $i }}</th>
                     <td>{{ $row->name }}</td>
                     <td><img src="{{ URL::asset($row->image) }}" alt="" height="100" width="100"></td>
+                    <td>{{ $row->discount }}</td>
                     <td>{{ $row->qty }}</td>
                     <td>Rp {{ number_format($row->price,0,'','.') }},-</td>
                     <td>
@@ -33,7 +35,7 @@
                 @php $i++; @endphp
                 @endforeach
                 <tr>
-                    <td colspan="3">Total</td>
+                    <td colspan="4">Total</td>
                     <td>{{ $sum_of_qty_cart }}</td>
                     <td>Rp {{ number_format($sum_of_cart_price,0,'','.') }},-</td>
                 </tr>
@@ -54,6 +56,12 @@
 
 <script>
     $('.deletecart').click(function(){
+      var conf = confirm("Want to delete this item?");
+
+      if (conf === false) {
+          return false;
+      }
+
       var id = $(this).attr('data-id');
 
       $.ajax({

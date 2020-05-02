@@ -65,15 +65,17 @@ class ExampleController extends Controller
     {
         $data['status'] = 'failed';
         $discount_percentage = 1;
+        $discount = 0;
 
         if ($request->all()) {
             if ($request->dscode !== ''){
-                $check_dscode = DB::table('discount')->where('discount_code', $request->dsode)->first();
-
+                $check_dscode = DB::table('discount')->where('discount_code',$request->dscode)->first();
+                // dd($check_dscode, $request->dscode);
                 if (is_null($check_dscode)) {
                     $data['status'] = 'Discount code is not valid!';    
                     return response()->json($data);
                 } else {
+                    $discount = (int) $check_dscode->discount_percentage;
                     $discount_percentage = $check_dscode->discount_percentage / 100;
                 }
             }
@@ -81,11 +83,17 @@ class ExampleController extends Controller
             $before_discount = (int) $request->qty * $request->price;
             $after_discount = $before_discount * $discount_percentage;
 
+            $check_existing_product = DB::table('cart')->where('product_id',$request->id)->first();
+
+            if(!is_null($check_existing_product)) {
+                DB::table('cart')->where('product_id', $request->id)->delete();
+            }
+
             DB::table('cart')->insert([
                 'product_id' => $request->id,
                 'qty' => $request->qty,
-                'price' => $after_discount,
-                'discount' => ($discount_percentage == 1) ? 0 : $discount_percentage,
+                'price' => ($discount === 0) ? $request->price * $request->qty : $before_discount - $after_discount,
+                'discount' => $discount,
             ]);
 
             $data['status'] = 'success add to cart!';
@@ -115,6 +123,7 @@ class ExampleController extends Controller
                 'cart.product_id',
                 'cart.qty',
                 'cart.price',
+                'cart.discount',
                 'product.name',
                 'product.image')
                 ->join('product','cart.product_id','=','product.id')

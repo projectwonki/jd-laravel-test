@@ -19,9 +19,12 @@ $router->get('/', function () use ($router) {
 
 $router->get('/differentiation','ExampleController@calculateDifferentiate');
 $router->get('/string-reduce','ExampleController@stringReduce');
-// $router->get('/tcpdf','ExampleController@getTcpdf');
-$router->post('/convert-images-to-pdf','ExampleController@postTcpdf');
-$router->get('/tcpdf','ExampleController@testingTcpdf');
+$router->get('/tcpdf','ExampleController@getTcpdf');
+$router->get('/convert-images-to-pdf','ExampleController@testingTcpdf');
+$router->get('/tcpdf-success', function(){
+    return view('tcpdf_success', ['meta_title' => 'TCPDF Success']);
+});
+// $router->get('/tcpdf','ExampleController@testingTcpdf');
 $router->get('/product','ExampleController@getProduct');
 $router->post('add-to-cart','ExampleController@addToCart');
 $router->get('/cart','ExampleController@getCart');

@@ -34,6 +34,10 @@
                 </tbody>
             </table>
         </div>
+        <div class="col-2">
+            <h5>See Product Page</h5>
+            <a href="{{ url('product') }}" class="btn btn-primary">Click</a>
+        </div>
     </div>
 </div>
 @endsection

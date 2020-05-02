@@ -118,9 +118,10 @@ class ExampleController extends Controller
             PDF::setPage($i);
             // PDF::Write(0, 'Hello World'.$i);
             if ($i === 1) {
-                PDF::ImageSVG($file1, $x = '', $y = '', $w = 0, $h = 0, $link = '', $align = '', $palign = '', $border = 0, $fitonpage = false );
+                PDF::ImageSVG($file1, $x=90, $y=200, $w = 0, $h = 0, $link = '', $align = '', $palign = '', $border = 0, $fitonpage = false );
             } else {
-                PDF::Image($file2, 90, 5, 40, '', 'PNG', '', 'T', false, 300, 'C', false, false, 0, false, false, false);
+                PDF::SetXY(50, 100);
+                PDF::Image($file2, 90, 120, 40, '', 'PNG', '', 'T', false, 300, 'C', false, false, 0, false, false, false);
             }
             
             
@@ -128,6 +129,8 @@ class ExampleController extends Controller
 
         PDF::Output(storage_path('tcpdf' . $this->generateRandomString() . '.pdf'), 'F');
         PDF::reset();
+
+        return redirect('tcpdf-success');
     }
 
     public function generateRandomString($length = 10) {

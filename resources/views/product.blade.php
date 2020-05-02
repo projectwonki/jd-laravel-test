@@ -36,7 +36,8 @@
               </table>
         </div>
         <div class="col-2">
-            <button type="button" class="btn btn-primary">See Cart Page</button>
+            <h5>See Cart Page</h5>
+            <a href="{{ url('cart') }}" class="btn btn-primary">Click</a>
         </div>
         <div class="col-5">
             <h5>Data Discount</h5>

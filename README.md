@@ -11,7 +11,8 @@
 ## How To
 1. clone this repo
 2. do command "composer update"
-3. visit every URL routes
+3. do command "php artisan migrate"
+4. visit every URL routes
 
 ## path to download the pdf result
 /storage

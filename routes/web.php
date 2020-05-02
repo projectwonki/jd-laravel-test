@@ -24,7 +24,7 @@ $router->get('/convert-images-to-pdf','ExampleController@testingTcpdf');
 $router->get('/tcpdf-success', function(){
     return view('tcpdf_success', ['meta_title' => 'TCPDF Success']);
 });
-// $router->get('/tcpdf','ExampleController@testingTcpdf');
 $router->get('/product','ExampleController@getProduct');
 $router->post('add-to-cart','ExampleController@addToCart');
+$router->post('delete-cart','ExampleController@deleteCart');
 $router->get('/cart','ExampleController@getCart');

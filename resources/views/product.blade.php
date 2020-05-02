@@ -17,9 +17,10 @@
                   </tr>
                 </thead>
                 <tbody>
+                @php $a = 1; @endphp
                 @foreach($product as $row)
                   <tr>
-                    <th scope="row">{{ $row->id }}</th>
+                    <th scope="row">{{ $a }}</th>
                     <td>{{ $row->name }}</td>
                     <td><img src="{{ URL::asset($row->image) }}" alt="" height="100" width="100"></td>
                     <td>Rp {{ number_format($row->price,0,'','.') }},-</td>
@@ -31,6 +32,7 @@
                         </select>
                     </td>
                   </tr>
+                @php $a++; @endphp
                 @endforeach
                 </tbody>
               </table>
@@ -80,13 +82,13 @@
             type : "post",
             data : {
                 "id" : productid,
-                "qty" : qty,
+                "qty" : qty.val(),
                 "dscode" : '',
                 "price" : price,
             },
             success:function(data) {
                 console.log(data);
-                alert(data.message);
+                alert(data.status);
             }
         });
       });

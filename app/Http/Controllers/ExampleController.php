@@ -85,10 +85,26 @@ class ExampleController extends Controller
                 'product_id' => $request->id,
                 'qty' => $request->qty,
                 'price' => $after_discount,
+                'discount' => ($discount_percentage == 1) ? 0 : $discount_percentage,
             ]);
 
             $data['status'] = 'success add to cart!';
         }
+        return response()->json($data);
+    }
+
+    public function deleteCart(Request $request)
+    {
+        $data['status'] = 'failed';
+
+        if ($request->all()) {
+            if ($request->id !== '') {
+                DB::table('cart')->where('id', $request->id)->delete();
+                $data['status'] = 'success';
+                return response()->json($data);
+            }
+        }
+
         return response()->json($data);
     }
 
@@ -104,7 +120,10 @@ class ExampleController extends Controller
                 ->join('product','cart.product_id','=','product.id')
                 ->get();
 
-        return view('cart', compact('cart'), ['meta_title' => 'Cart Page']);
+        $sum_of_qty_cart = DB::table('cart')->sum('qty');
+        $sum_of_cart_price = DB::table('cart')->sum('price');
+
+        return view('cart', compact('cart','sum_of_cart_price','sum_of_qty_cart'), ['meta_title' => 'Cart Page']);
     }
 
     public function testingTcpdf()
@@ -116,7 +135,6 @@ class ExampleController extends Controller
             PDF::SetTitle('Page'.$i);
             PDF::AddPage();
             PDF::setPage($i);
-            // PDF::Write(0, 'Hello World'.$i);
             if ($i === 1) {
                 PDF::ImageSVG($file1, $x=90, $y=200, $w = 0, $h = 0, $link = '', $align = '', $palign = '', $border = 0, $fitonpage = false );
             } else {
